@@ -42,30 +42,30 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 		// because the number of reachable vertices stays the same
 		// when the compute method is not invoked
 		if (getSuperstep() > 1) {
-			  LongValue l = new LongValue(getSuperstep() - 1);
-			  while (l.getValue() > 0L) {
+			  int l = getSuperstep() - 1;
+			  while (l > 0) {
 				  if (vertexValue.getShortestPath().containsKey(l)) {
 				    break;
 				  }
-				  l.setValue(l.getValue()-1L);
+				  l = l-1;
 				}
 			  
-			LongValue numReachable = vertexValue.getShortestPath().get(l);
+			int numReachable = vertexValue.getShortestPath().get(l);
 			
-			for (; l.getValue() < getSuperstep(); l.setValue(l.getValue()+1L) ) { // ugly for loop.
+			for (; l < getSuperstep(); l++ ) { 
 				System.err.println("Adding values to shortest path");
 				vertexValue.getShortestPath().put(l, numReachable);
 			}
 		}
 		// subtract 1 because our own bit is counted as well
 		System.err.println("Putting <"+getSuperstep()+";"+(vertexValue.getCounter().getCount()-1L)+"> for vertex "+vertexKey.getValue());
-		vertexValue.getShortestPath().put(new LongValue(getSuperstep()), new LongValue(vertexValue.getCounter().getCount()-1L));
+		vertexValue.getShortestPath().put(getSuperstep(), ((int)vertexValue.getCounter().getCount())-1);
 		
-		System.err.println("+++ Debugging n nodes reachable within x steps (x,n) for "+vertexKey.getValue());
-		SerializableHashMap<LongValue, LongValue> hm = vertexValue.getShortestPath();
-		for( Entry<LongValue, LongValue> e: hm.entrySet()) {
-			System.err.println("+++ "+e.getKey().getValue()+";"+e.getValue().getValue());
-		}
+//		System.err.println("+++ Debugging n nodes reachable within x steps (x,n) for "+vertexKey.getValue());
+//		ShortestPath hm = vertexValue.getShortestPath();
+//		for( Entry<LongValue, LongValue> e: hm.entrySet()) {
+//			System.err.println("+++ "+e.getKey().getValue()+";"+e.getValue().getValue());
+//		}
 		setNewVertexValue(vertexValue);
 	}
 

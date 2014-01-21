@@ -10,14 +10,21 @@ import eu.stratosphere.types.Value;
 
 public class VertexValue implements Value {
 
+	final static int PATHS_SIZE = 15;
+	
+	
 	private static final long serialVersionUID = 1L;
 	
-	private SerializableHashMap<LongValue, LongValue> shortestPath = new SerializableHashMap<LongValue, LongValue>();
+	private ShortestPath shortestPath = new ArraySP(PATHS_SIZE);
+	// private SerializableHashMap<LongValue, LongValue> shortestPath = new SerializableHashMap<LongValue, LongValue>();
 	private HLLCounterWritable counter = new HLLCounterWritable();
 	
-	public SerializableHashMap<LongValue, LongValue> getShortestPath() {
+	public ShortestPath getShortestPath() {
 		return this.shortestPath;
 	}
+	
+	
+	
 	
 	public HLLCounterWritable getCounter() {
 		return this.counter;
@@ -27,7 +34,6 @@ public class VertexValue implements Value {
 	public void write(DataOutput out) throws IOException {
 		counter.write(out);
 		shortestPath.write(out);
-		
 	}
 
 	@Override
