@@ -16,16 +16,16 @@ public class Closeness implements Program {
 
 	public static void main(String[] args) throws Exception {
 		// at home
-//		String[] myArgs = {"1", 
-//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
-//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/stratoOut",
-//		"100"};
+		String[] myArgs = {"1", 
+		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
+		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/stratoOut",
+		"100"};
 		
 		// laptop
-		String[] myArgs = {"1", 
-		"file:///home/robert/Projekte/ozone/spargel-closeness/test.txt",
-		"file:///home/robert/Projekte/ozone/spargel-closeness/spargelout",
-		"100"};
+//		String[] myArgs = {"1", 
+//		"file:///home/robert/Projekte/ozone/spargel-closeness/test.txt",
+//		"file:///home/robert/Projekte/ozone/spargel-closeness/spargelout",
+//		"100"};
 		LocalExecutor.execute(new Closeness(), myArgs);
 	}
 

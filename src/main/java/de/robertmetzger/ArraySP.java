@@ -3,9 +3,15 @@ package de.robertmetzger;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Arrays;
 
 import eu.stratosphere.types.LongValue;
 
+/**
+ * Array-based (fixed length shortest path)
+ * @author robert
+ *
+ */
 public class ArraySP implements ShortestPath {
 	int pathSize;
 	private int[] shortestPaths;
@@ -13,6 +19,7 @@ public class ArraySP implements ShortestPath {
 	public ArraySP(int size) {
 		pathSize = size;
 		shortestPaths = new int[size];
+		Arrays.fill(shortestPaths, -1);
 	}
 
 	@Override
@@ -31,8 +38,7 @@ public class ArraySP implements ShortestPath {
 
 	@Override
 	public boolean containsKey(int l) {
-		// TODO Auto-generated method stub
-		return false;
+		return get(l) != -1;
 	}
 
 	@Override
@@ -42,8 +48,7 @@ public class ArraySP implements ShortestPath {
 
 	@Override
 	public void put(int l, int numReachable) {
-		// TODO Auto-generated method stub
-		
+		shortestPaths[l] = numReachable;
 	}
 
 }
