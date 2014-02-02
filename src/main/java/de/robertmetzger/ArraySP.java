@@ -51,4 +51,15 @@ public class ArraySP implements ShortestPath {
 		shortestPaths[l] = numReachable;
 	}
 
+	@Override
+	public String stringify() {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < pathSize; i++) {
+			if( shortestPaths[i] != -1) {
+				sb.append(i+": "+shortestPaths[i]+"; ");
+			}
+		}
+		return sb.toString();
+	}
+
 }

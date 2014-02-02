@@ -21,6 +21,6 @@ public class InitializeVertices extends MapFunction {
 		outRec.setField(0, vertexId);
 		outRec.setField(1, vertexValue);
 		out.collect(outRec);
-		System.err.println("Vertex: "+vertexId.getValue());
+	//	System.err.println("Vertex: "+vertexId.getValue());
 	}
 }

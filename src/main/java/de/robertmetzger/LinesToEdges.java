@@ -24,7 +24,7 @@ public class LinesToEdges extends MapFunction {
 			outRec.setField(1, toVal);
 			outRec.setField(2, NullValue.getInstance());
 			out.collect(outRec);
-			System.err.println("Edge: "+fromVal.getValue()+" -> "+toVal.getValue());
+			// System.err.println("Edge: "+fromVal.getValue()+" -> "+toVal.getValue());
 		}
 	}
 }

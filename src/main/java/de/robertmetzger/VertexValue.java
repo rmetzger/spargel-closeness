@@ -23,9 +23,6 @@ public class VertexValue implements Value {
 		return this.shortestPath;
 	}
 	
-	
-	
-	
 	public HLLCounterWritable getCounter() {
 		return this.counter;
 	}
@@ -40,5 +37,13 @@ public class VertexValue implements Value {
 	public void read(DataInput in) throws IOException {
 		counter.read(in);
 		shortestPath.read(in);
+	}
+	
+	/**
+	 * Output to file.
+	 */
+	@Override
+	public String toString() {
+		return this.shortestPath.stringify();
 	}
 }

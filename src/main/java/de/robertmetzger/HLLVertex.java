@@ -1,9 +1,7 @@
 package de.robertmetzger;
 
 import java.util.Iterator;
-import java.util.Map.Entry;
 
-import eu.stratosphere.nephele.util.SerializableHashMap;
 import eu.stratosphere.spargel.java.VertexUpdateFunction;
 import eu.stratosphere.types.LongValue;
 
@@ -17,19 +15,19 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 	public void updateVertex(LongValue vertexKey,
 			VertexValue vertexValue, Iterator<HLLCounterWritable> inMessages)
 			throws Exception {
-		System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
+	//	System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
 		
 		
 		long seenCountBefore = vertexValue.getCounter().getCount();
-		System.err.println("seenCountBefore="+seenCountBefore);
+	//	System.err.println("seenCountBefore="+seenCountBefore);
 		while(inMessages.hasNext()) {
-			System.err.println("merging with message ");
+		//	System.err.println("merging with message ");
 			vertexValue.getCounter().merge(inMessages.next());
 		}
 
 		long seenCountAfter = vertexValue.getCounter().getCount();
 		
-		System.err.println("seenCountAfter="+seenCountAfter);
+	//	System.err.println("seenCountAfter="+seenCountAfter);
 		
 
 		//if ((seenCountBefore != seenCountAfter) || (getSuperstep() == 1)) {
@@ -53,12 +51,12 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 			int numReachable = vertexValue.getShortestPath().get(l);
 			
 			for (; l < getSuperstep(); l++ ) { 
-				System.err.println("Adding values to shortest path");
+			//	System.err.println("Adding values to shortest path");
 				vertexValue.getShortestPath().put(l, numReachable);
 			}
 		}
 		// subtract 1 because our own bit is counted as well
-		System.err.println("Putting <"+getSuperstep()+";"+(vertexValue.getCounter().getCount()-1L)+"> for vertex "+vertexKey.getValue());
+	//	System.err.println("Putting <"+getSuperstep()+";"+(vertexValue.getCounter().getCount()-1L)+"> for vertex "+vertexKey.getValue());
 		vertexValue.getShortestPath().put(getSuperstep(), ((int)vertexValue.getCounter().getCount())-1);
 		
 //		System.err.println("+++ Debugging n nodes reachable within x steps (x,n) for "+vertexKey.getValue());
@@ -66,7 +64,9 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 //		for( Entry<LongValue, LongValue> e: hm.entrySet()) {
 //			System.err.println("+++ "+e.getKey().getValue()+";"+e.getValue().getValue());
 //		}
-		setNewVertexValue(vertexValue);
+		if(seenCountBefore != seenCountAfter) {
+			setNewVertexValue(vertexValue);
+		}
 	}
 
 

@@ -11,7 +11,7 @@ public class HLLMessager extends MessagingFunction<LongValue, VertexValue, HLLCo
 	@Override
 	public void sendMessages(LongValue vertexKey, VertexValue vertexValue)
 			throws Exception {
-		System.err.println("Sending message from "+vertexKey+" to all neighbors with count "+vertexValue.getCounter().getCount());
+		// System.err.println("Sending message from "+vertexKey+" to all neighbors with count "+vertexValue.getCounter().getCount());
 		sendMessageToAllNeighbors(vertexValue.getCounter());
 	}
 

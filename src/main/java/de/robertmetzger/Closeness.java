@@ -15,17 +15,17 @@ public class Closeness implements Program {
 
 
 	public static void main(String[] args) throws Exception {
-		// at home
-		String[] myArgs = {"1", 
-		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
-		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/stratoOut",
-		"100"};
-		
-		// laptop
+//		// at home
 //		String[] myArgs = {"1", 
-//		"file:///home/robert/Projekte/ozone/spargel-closeness/test.txt",
-//		"file:///home/robert/Projekte/ozone/spargel-closeness/spargelout",
+//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
+//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/stratoOut",
 //		"100"};
+//		
+		// laptop
+		String[] myArgs = {"1", 
+		"file:///home/robert/Projekte/ozone/spargel-closeness/enron-clean2.txt",
+		"file:///home/robert/Projekte/ozone/spargel-closeness/enronout",
+		"100"};
 		LocalExecutor.execute(new Closeness(), myArgs);
 	}
 
@@ -44,19 +44,21 @@ public class Closeness implements Program {
 		MapOperator initialVertices = MapOperator.builder(InitializeVertices.class)
 										.input(input).build();
 		
-		// create DataSinkContract for writing the new cluster positions
-		FileDataSink result = new FileDataSink(CsvOutputFormat.class, resultPath, "Result");
-		CsvOutputFormat.configureRecordFormat(result)
-			.recordDelimiter('\n')
-			.fieldDelimiter(' ')
-			.field(LongValue.class, 0);
-		//	.field(LongValue.class, 1);
+		
 		
 		SpargelIteration iteration = new SpargelIteration(
 			new HLLMessager(), new HLLVertex(), "HyperLogLog Closeness (Spargel API)");
 		iteration.setVertexInput(initialVertices);
 		iteration.setEdgesInput(edges);
 		iteration.setNumberOfIterations(maxIterations);
+		
+		// create DataSinkContract for writing the new cluster positions
+		FileDataSink result = new FileDataSink(CsvOutputFormat.class, resultPath, "Result");
+		CsvOutputFormat.configureRecordFormat(result)
+			.recordDelimiter('\n')
+			.fieldDelimiter(' ')
+			.field(LongValue.class, 0)
+			.field(VertexValue.class, 1);
 		result.setInput(iteration.getOutput());
 
 		Plan p = new Plan(result);
