@@ -8,12 +8,12 @@ import eu.stratosphere.types.LongValue;
 
 
 // generic types VertexKeyType, VertexValueType, MessageType
-public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLCounterWritable> {
+public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, Counter> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void updateVertex(LongValue vertexKey,
-			VertexValue vertexValue, Iterator<HLLCounterWritable> inMessages)
+			VertexValue vertexValue, Iterator<Counter> inMessages)
 			throws Exception {
 	//	System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
 		

@@ -5,7 +5,7 @@ import eu.stratosphere.types.LongValue;
 import eu.stratosphere.types.NullValue;
 
 // VertexKeyType, VertexValueType, MessageType, EdgeValueType
-public class HLLMessager extends MessagingFunction<LongValue, VertexValue, HLLCounterWritable, NullValue> {
+public class HLLMessager extends MessagingFunction<LongValue, VertexValue, Counter, NullValue> {
 	private static final long serialVersionUID = 1L;
 
 	@Override

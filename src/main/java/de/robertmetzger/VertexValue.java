@@ -17,13 +17,14 @@ public class VertexValue implements Value {
 	
 	private ShortestPath shortestPath = new ArraySP(PATHS_SIZE);
 	// private SerializableHashMap<LongValue, LongValue> shortestPath = new SerializableHashMap<LongValue, LongValue>();
-	private HLLCounterWritable counter = new HLLCounterWritable();
+	
+	private Counter counter = new BitfieldCounter(10);
 	
 	public ShortestPath getShortestPath() {
 		return this.shortestPath;
 	}
 	
-	public HLLCounterWritable getCounter() {
+	public Counter getCounter() {
 		return this.counter;
 	}
 

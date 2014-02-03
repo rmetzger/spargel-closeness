@@ -4,13 +4,15 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import com.google.common.base.Preconditions;
+
 import eu.stratosphere.types.Value;
 
 /**
  * A counter for counting unique vertex IDs using a HyperLogLog sketch.
  * 
  */
-public class HLLCounterWritable implements Value {
+public class HLLCounterWritable implements Counter {
 	private static final long serialVersionUID = 1L;
 	
 	// must be a power of two
@@ -92,11 +94,13 @@ public class HLLCounterWritable implements Value {
 		return count;
 	}
 	
-	public void merge(HLLCounterWritable other) {
+	public void merge(Counter other) {
+		Preconditions.checkArgument(other instanceof HLLCounterWritable);
+		HLLCounterWritable oc = (HLLCounterWritable) other;
 		// take the maximum of each bucket pair
 		for (int i = 0; i < this.buckets.length; i++) {
-			if(this.buckets[i] < other.buckets[i]) {
-				this.buckets[i] = other.buckets[i];
+			if(this.buckets[i] < oc.buckets[i]) {
+				this.buckets[i] = oc.buckets[i];
 			}
 		}
 	}
