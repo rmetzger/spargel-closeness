@@ -8,18 +8,18 @@ import eu.stratosphere.types.LongValue;
 
 
 // generic types VertexKeyType, VertexValueType, MessageType
-public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, Counter> {
+public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, BitfieldCounter> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void updateVertex(LongValue vertexKey,
-			VertexValue vertexValue, Iterator<Counter> inMessages)
+			VertexValue vertexValue, Iterator<BitfieldCounter> inMessages)
 			throws Exception {
-	//	System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
+		System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
 		
 		
 		long seenCountBefore = vertexValue.getCounter().getCount();
-	//	System.err.println("seenCountBefore="+seenCountBefore);
+		System.err.println("seenCountBefore="+seenCountBefore);
 		while(inMessages.hasNext()) {
 		//	System.err.println("merging with message ");
 			vertexValue.getCounter().merge(inMessages.next());
@@ -27,7 +27,7 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, Coun
 
 		long seenCountAfter = vertexValue.getCounter().getCount();
 		
-	//	System.err.println("seenCountAfter="+seenCountAfter);
+		System.err.println("seenCountAfter="+seenCountAfter);
 		
 
 		//if ((seenCountBefore != seenCountAfter) || (getSuperstep() == 1)) {

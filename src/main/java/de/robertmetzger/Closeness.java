@@ -22,10 +22,15 @@ public class Closeness implements Program {
 //		"100"};
 //		
 		// laptop
+//		String[] myArgs = {"1", 
+//		"file:///home/robert/Projekte/ozone/spargel-closeness/enron-clean2.txt",
+//		"file:///home/robert/Projekte/ozone/spargel-closeness/enronout",
+//		"100"};
+		
 		String[] myArgs = {"1", 
-		"file:///home/robert/Projekte/ozone/spargel-closeness/enron-clean2.txt",
-		"file:///home/robert/Projekte/ozone/spargel-closeness/enronout",
-		"100"};
+			"file:///home/robert/Projekte/ozone/spargel-closeness/test.txt",
+			"file:///home/robert/Projekte/ozone/spargel-closeness/testout",
+			"100"};
 		LocalExecutor.execute(new Closeness(), myArgs);
 	}
 
