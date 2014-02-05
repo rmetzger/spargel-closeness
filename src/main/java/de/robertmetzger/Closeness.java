@@ -15,11 +15,16 @@ public class Closeness implements Program {
 
 
 	public static void main(String[] args) throws Exception {
-//		// at home
+		// at home
 //		String[] myArgs = {"1", 
 //		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
-//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/stratoOut",
+//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/stratoOut",
 //		"100"};
+		String[] myArgs = {"1", 
+		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enron-clean2.txt",
+		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enronOut",
+		"100"};
+		
 //		
 		// laptop
 //		String[] myArgs = {"1", 
@@ -27,10 +32,10 @@ public class Closeness implements Program {
 //		"file:///home/robert/Projekte/ozone/spargel-closeness/enronout",
 //		"100"};
 		
-		String[] myArgs = {"1", 
-			"file:///home/robert/Projekte/ozone/spargel-closeness/test.txt",
-			"file:///home/robert/Projekte/ozone/spargel-closeness/testout",
-			"100"};
+//		String[] myArgs = {"1", 
+//			"file:///home/robert/Projekte/ozone/spargel-closeness/test.txt",
+//			"file:///home/robert/Projekte/ozone/spargel-closeness/testout",
+//			"100"};
 		LocalExecutor.execute(new Closeness(), myArgs);
 	}
 
@@ -48,8 +53,6 @@ public class Closeness implements Program {
 		
 		MapOperator initialVertices = MapOperator.builder(InitializeVertices.class)
 										.input(input).build();
-		
-		
 		
 		SpargelIteration iteration = new SpargelIteration(
 			new HLLMessager(), new HLLVertex(), "HyperLogLog Closeness (Spargel API)");

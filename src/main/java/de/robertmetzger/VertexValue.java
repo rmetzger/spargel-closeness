@@ -18,7 +18,7 @@ public class VertexValue implements Value {
 	private ShortestPath shortestPath = new ArraySP(PATHS_SIZE);
 	// private SerializableHashMap<LongValue, LongValue> shortestPath = new SerializableHashMap<LongValue, LongValue>();
 	
-	private Counter counter = new BitfieldCounter(10);
+	private Counter counter = new BitfieldCounter(50000);
 	
 	public ShortestPath getShortestPath() {
 		return this.shortestPath;
