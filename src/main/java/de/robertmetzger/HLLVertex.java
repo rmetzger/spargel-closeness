@@ -16,11 +16,11 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 	public void updateVertex(LongValue vertexKey,
 			VertexValue vertexValue, MessageIterator<HLLCounterWritable> inMessages)
 			throws Exception {
-		System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
+	//	System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
 		
 		
 		long seenCountBefore = vertexValue.getCounter().getCount();
-		System.err.println("seenCountBefore="+seenCountBefore);
+	//	System.err.println("seenCountBefore="+seenCountBefore);
 		while(inMessages.hasNext()) {
 		//	System.err.println("merging with message ");
 			vertexValue.getCounter().merge(inMessages.next());
@@ -28,7 +28,7 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 
 		long seenCountAfter = vertexValue.getCounter().getCount();
 		
-		System.err.println("seenCountAfter="+seenCountAfter);
+	//	System.err.println("seenCountAfter="+seenCountAfter);
 		
 
 		//if ((seenCountBefore != seenCountAfter) || (getSuperstep() == 1)) {
