@@ -10,7 +10,6 @@ import eu.stratosphere.api.java.record.io.TextInputFormat;
 import eu.stratosphere.api.java.record.operators.MapOperator;
 import eu.stratosphere.client.LocalExecutor;
 import eu.stratosphere.nephele.client.JobExecutionResult;
-import eu.stratosphere.pact.runtime.task.util.TaskConfig;
 import eu.stratosphere.spargel.java.SpargelIteration;
 import eu.stratosphere.types.LongValue;
 
@@ -19,10 +18,10 @@ public class Closeness implements Program {
 
 	public static void main(String[] args) throws Exception {
 		// at home
-//		String[] myArgs = {"1", 
-//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
-//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/stratoOut",
-//		"100"};
+		String[] myArgs = {"1", 
+		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
+		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/stratoOut",
+		"100", "\\t", ","};
 //		String[] myArgs = {"1", 
 //		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enron-clean2.txt",
 //		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enronOut",
@@ -35,18 +34,18 @@ public class Closeness implements Program {
 //		"file:///home/robert/Projekte/ozone/spargel-closeness/enronout",
 //		"100"};
 		
-		String[] myArgs = {"1", 
-			"file:///home/robert/Projekte/ozone/spargel-closeness/test2",
-			"file:///home/robert/Projekte/ozone/spargel-closeness/testout",
-			"100", "\\t", "\\t"};
+//		String[] myArgs = {"1", 
+//			"file:///home/robert/Projekte/ozone/spargel-closeness/test2",
+//			"file:///home/robert/Projekte/ozone/spargel-closeness/testout",
+//			"100", "\\t", "\\t"};
 		JobExecutionResult res = LocalExecutor.execute(new Closeness(), myArgs);
 		System.err.println("Accu Res "+AccumulatorHelper.getResultsFormated(res.getAllAccumulatorResults()));
 	}
-	public static class ArgsParser {
+	public static class ArgUtiliy {
 		private String[] args;
 		int pos = 0;
 
-		public ArgsParser(String... args) {
+		public ArgUtiliy(String... args) {
 			this.args = args;
 		}
 		private void check() {
@@ -55,27 +54,20 @@ public class Closeness implements Program {
 			}
 		}
 		
-		/**
-		 * This actually only works for strings.
-		 * @return
-		 */
-		public <T> T get() {
-			return (T) args[pos++];
-		}
-		
-		public int i() {
+
+		public int integer() {
 			check();
 			return Integer.parseInt(args[pos++]);
 		}
 		
-		public int i(int def) {
+		public int integer(int def) {
 			if(pos < args.length) {
 				return Integer.parseInt(args[pos++]);
 			} else {
 				return def;
 			}
 		}
-		public String s() {
+		public String str() {
 			check();
 			return args[pos++];
 		}
@@ -91,12 +83,11 @@ public class Closeness implements Program {
 
 	@Override
 	public Plan getPlan(String... args) {
-		ArgsParser p = new ArgsParser(args);
-		final String mode = p.get();
-		final int dop = p.i(1);
-		final String inputPath = p.s();
-		final String resultPath = p.s();
-		final int maxIterations = p.i(10);
+		ArgUtiliy p = new ArgUtiliy(args);
+		final int dop = p.integer(1);
+		final String inputPath = p.str();
+		final String resultPath = p.str();
+		final int maxIterations = p.integer(10);
 		final String fromSplit = p.s("\\t");
 		final String toSplit = p.s(",");
 		System.err.println("Using fromSplit='"+fromSplit+"', toSplit='"+toSplit+"'");
@@ -125,9 +116,9 @@ public class Closeness implements Program {
 			.field(VertexValue.class, 1);
 		result.setInput(iteration.getOutput());
 
-		Plan p = new Plan(result);
-		p.setDefaultParallelism(dop);
-		return p;
+		Plan plan = new Plan(result);
+		plan.setDefaultParallelism(dop);
+		return plan;
 	}
 
 }
