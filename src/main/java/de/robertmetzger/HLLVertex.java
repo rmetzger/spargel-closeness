@@ -1,7 +1,6 @@
 package de.robertmetzger;
 
 
-import java.util.Iterator;
 
 import eu.stratosphere.spargel.java.VertexUpdateFunction;
 import eu.stratosphere.spargel.java.util.MessageIterator;
@@ -15,7 +14,7 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 
 	@Override
 	public void updateVertex(LongValue vertexKey,
-			VertexValue vertexValue, Iterator<HLLCounterWritable> inMessages)
+			VertexValue vertexValue, MessageIterator<HLLCounterWritable> inMessages)
 			throws Exception {
 		System.err.println("Updating vertext "+vertexKey.getValue()+" on superstep "+getSuperstep());
 		
