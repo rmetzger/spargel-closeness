@@ -21,7 +21,7 @@ public class Closeness implements Program {
 		String[] myArgs = {"1", 
 		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
 		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/stratoOut",
-		"100", "\\t", ","};
+		"100", "\\t", " "};
 //		String[] myArgs = {"1", 
 //		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enron-clean2.txt",
 //		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enronOut",
@@ -89,7 +89,10 @@ public class Closeness implements Program {
 		final String resultPath = p.str();
 		final int maxIterations = p.integer(10);
 		final String fromSplit = p.s("\\t");
-		final String toSplit = p.s(",");
+		String toSplit = p.s(",");
+		if(toSplit.equals("space")) {
+			toSplit = " ";
+		}
 		System.err.println("Using fromSplit='"+fromSplit+"', toSplit='"+toSplit+"'");
 		
 		FileDataSource input = new FileDataSource(new TextInputFormat(), inputPath, "Input");
