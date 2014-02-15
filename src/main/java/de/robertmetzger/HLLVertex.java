@@ -1,8 +1,10 @@
 package de.robertmetzger;
 
+
 import java.util.Iterator;
 
 import eu.stratosphere.spargel.java.VertexUpdateFunction;
+import eu.stratosphere.spargel.java.util.MessageIterator;
 import eu.stratosphere.types.LongValue;
 
 
@@ -32,7 +34,6 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 
 		//if ((seenCountBefore != seenCountAfter) || (getSuperstep() == 1)) {
 		//	System.err.println("Writing. SP size "+vertexValue.getShortestPath().size());
-			
 		// }
 
 		// determine last iteration for which we set a value,

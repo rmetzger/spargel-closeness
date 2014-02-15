@@ -10,7 +10,7 @@ import eu.stratosphere.types.Value;
 
 public class VertexValue implements Value {
 
-	final static int PATHS_SIZE = 15;
+	final static int PATHS_SIZE = 25;
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -18,7 +18,7 @@ public class VertexValue implements Value {
 	private ShortestPath shortestPath = new ArraySP(PATHS_SIZE);
 	// private SerializableHashMap<LongValue, LongValue> shortestPath = new SerializableHashMap<LongValue, LongValue>();
 	
-	private Counter counter = new BitfieldCounter(50000);
+	private Counter counter = new HLLCounterWritable();
 	
 	public ShortestPath getShortestPath() {
 		return this.shortestPath;
