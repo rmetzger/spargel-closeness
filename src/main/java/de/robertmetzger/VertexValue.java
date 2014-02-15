@@ -10,7 +10,7 @@ import eu.stratosphere.types.Value;
 
 public class VertexValue implements Value {
 
-	final static int PATHS_SIZE = 25;
+	final public static int PATHS_SIZE = 30;
 	
 	
 	private static final long serialVersionUID = 1L;

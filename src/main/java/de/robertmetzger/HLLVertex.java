@@ -39,6 +39,10 @@ public class HLLVertex extends VertexUpdateFunction<LongValue, VertexValue, HLLC
 		// we need to copy this to all iterations up to this one
 		// because the number of reachable vertices stays the same
 		// when the compute method is not invoked
+		if(getSuperstep() >= VertexValue.PATHS_SIZE) {
+			// we basically limit the number of iterations manually.
+			return;
+		}
 		if (getSuperstep() > 1) {
 			  int l = getSuperstep() - 1;
 			  while (l > 0) {

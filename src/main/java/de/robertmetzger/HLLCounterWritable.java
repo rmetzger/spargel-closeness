@@ -16,7 +16,7 @@ public class HLLCounterWritable implements Counter {
 	private static final long serialVersionUID = 1L;
 	
 	// must be a power of two
-	public final static int NUMBER_OF_BUCKETS = 64;
+	public final static int NUMBER_OF_BUCKETS = 16;
 	private final static double ALPHA = 0.709;
 	
 	private byte[] buckets;
