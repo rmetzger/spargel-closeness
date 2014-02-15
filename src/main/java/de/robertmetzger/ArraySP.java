@@ -48,7 +48,12 @@ public class ArraySP implements ShortestPath {
 
 	@Override
 	public void put(int l, int numReachable) {
-		shortestPaths[l] = numReachable;
+		if(l >= shortestPaths.length) return; // this is nasty!
+		try {
+			shortestPaths[l] = numReachable;
+		} catch (ArrayIndexOutOfBoundsException aio) {
+			System.err.println("Got aio at "+l+" and "+shortestPaths.length);
+		}
 	}
 
 	@Override
