@@ -20,6 +20,7 @@ public class LinesToEdges extends MapFunction implements Serializable {
 	private String toSplit = ",";
 	private LongCounter in;
 	private LongCounter outA;
+	private LongCounter skipped;
 	public LinesToEdges() {
 	}
 	
@@ -28,6 +29,7 @@ public class LinesToEdges extends MapFunction implements Serializable {
 		super.open(parameters);
 		in = getRuntimeContext().getLongCounter("in lines (edges)");
 		outA = getRuntimeContext().getLongCounter("out tuples (edges)");
+		skipped = getRuntimeContext().getLongCounter("skipped");
 	}
 	
 	public LinesToEdges(String fromSplit, String toSplit) {
@@ -53,6 +55,10 @@ public class LinesToEdges extends MapFunction implements Serializable {
 				outA.add(1L);
 			}
 		} else {
+			if(from.length == 1) {
+				skipped.add(1L);
+				return;
+			}
 			String[] to = from[1].split(toSplit);
 			for(int i = 0; i < to.length; i++) {
 				toVal.setValue(Long.parseLong(to[i]));
