@@ -18,10 +18,10 @@ public class Closeness implements Program {
 
 	public static void main(String[] args) throws Exception {
 		// at home
-		String[] myArgs = {"1", 
-		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
-		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/stratoOut",
-		"100", "\\t", ","};
+//		String[] myArgs = {"1", 
+//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester2/AIM3/project/data/small.txt",
+//		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/stratoOut",
+//		"100", "\\t", ","};
 //		String[] myArgs = {"1", 
 //		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enron-clean2.txt",
 //		"file:///home/robert/Projekte/Studium/TUBerlin/Semester3/IMPRO3/spargel-closeness/enronOut",
@@ -38,6 +38,12 @@ public class Closeness implements Program {
 //			"file:///home/robert/Projekte/ozone/spargel-closeness/test2",
 //			"file:///home/robert/Projekte/ozone/spargel-closeness/testout",
 //			"100", "\\t", "\\t"};
+		
+		// waury
+		String[] myArgs = {"1", 
+				"file:///home/robert/Projects/spargel-closeness/enron-clean2.txt",
+				"file:///home/robert/Projects/stratoOut",
+				"100"};
 		JobExecutionResult res = LocalExecutor.execute(new Closeness(), myArgs);
 		System.err.println("Accu Res "+AccumulatorHelper.getResultsFormated(res.getAllAccumulatorResults()));
 	}

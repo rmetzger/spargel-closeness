@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import com.google.common.base.Preconditions;
 
-import eu.stratosphere.types.Value;
-
 /**
  * A counter for counting unique vertex IDs using a HyperLogLog sketch.
  * 
@@ -55,15 +53,15 @@ public class HLLCounterWritable implements Counter {
 		hash ^= hash >>> r;
 		/* Murmur 2.0 hash END */
 		
-		// last 6 bits as bucket index
+		// last 4 bits as bucket index
 		int mask = NUMBER_OF_BUCKETS - 1;
 		int bucketIndex = (int) (hash & mask);
 		
-		// throw away last 6 bits
-		hash >>= 6;
-		// make sure the 6 new zeroes don't impact estimate
-		hash |= 0xfc00000000000000L;
-		// hash has now 58 significant bits left
+		// throw away last 4 bits
+		hash >>= 4;
+		// make sure the 4 new zeroes don't impact estimate
+		hash |= 0xf000000000000000L;
+		// hash has now 60 significant bits left
 		this.buckets[bucketIndex] = (byte) (Long.numberOfTrailingZeros(hash) + 1L);
 	}
 	
