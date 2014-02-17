@@ -111,7 +111,7 @@ public class Closeness implements Program {
 		// initialVertices.setParameter(TaskConfig.DEFAULT_ACCUMULATORS, true);
 		
 		SpargelIteration iteration = new SpargelIteration(
-			new HLLMessager(), new HLLVertex(), "HyperLogLog Closeness (Spargel API)");
+			new HLL32Messager(), new HLL32Vertex(), "HyperLogLog Closeness (Spargel API)");
 		iteration.setVertexInput(initialVertices);
 		iteration.setEdgesInput(edges);
 		iteration.setNumberOfIterations(maxIterations);
