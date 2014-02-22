@@ -13,16 +13,19 @@ public class HLL32CounterWritable implements Counter {
 	// must be a power of two
 	public final static int NUMBER_OF_BUCKETS = 16;
 	private final static double ALPHA = 0.709;
+	private final static int BITS_PER_BUCKET = 5;
 	
-	private byte[] buckets;
+	private NBitBucketArray buckets;
 	
 	public HLL32CounterWritable() {
-		this.buckets = new byte[NUMBER_OF_BUCKETS];
-		
+		try {
+			this.buckets = new NBitBucketArray(BITS_PER_BUCKET, NUMBER_OF_BUCKETS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void addNode(long n) {
-		/* Murmur 2.0 hash START */
+	public void addNode(long n) throws Exception {
 		int code = (int)n;
 		code = (code + 0x7ed55d16) + (code << 12);
 		code = (code ^ 0xc761c23c) ^ (code >>> 19);
@@ -41,23 +44,23 @@ public class HLL32CounterWritable implements Counter {
 		hash >>= 4;
 		// make sure the 4 new zeroes don't impact estimate
 		hash |= 0xf0000000;
-		// hash has now 60 significant bits left
-		this.buckets[bucketIndex] = (byte) (Integer.numberOfTrailingZeros(hash) + 1);
+		// hash has now 28 significant bits left
+		this.buckets.setBucket(bucketIndex, Integer.numberOfTrailingZeros(hash) + 1);
 	}
 	
 	public long getCount() {
 		int count = 0;
 		int m2 = NUMBER_OF_BUCKETS*NUMBER_OF_BUCKETS;
 		double sum = 0.0;
-		for (int i = 0; i < buckets.length; i++) {
-			sum += Math.pow(2.0, -buckets[i]);
+		for (int i = 0; i < NUMBER_OF_BUCKETS; i++) {
+			sum += Math.pow(2.0, -this.buckets.getBucket(i));
 		}
 		int estimate = (int)(ALPHA*m2*(1.0/sum));
 		if(estimate < 2.5*NUMBER_OF_BUCKETS) {
 			// look for empty buckets
 			int V = 0;
-			for (int i = 0; i < buckets.length; i++) {
-				if(buckets[i] == 0) {
+			for (int i = 0; i < NUMBER_OF_BUCKETS; i++) {
+				if(buckets.getBucket(i) == 0) {
 					V++;
 				}
 			}
@@ -72,25 +75,25 @@ public class HLL32CounterWritable implements Counter {
 		return (long)count;
 	}
 	
-	public void merge(Counter other) {
+	public void merge(Counter other) throws Exception {
 		Preconditions.checkArgument(other instanceof HLL32CounterWritable);
 		HLL32CounterWritable oc = (HLL32CounterWritable) other;
 		// take the maximum of each bucket pair
-		for (int i = 0; i < this.buckets.length; i++) {
-			if(this.buckets[i] < oc.buckets[i]) {
-				this.buckets[i] = oc.buckets[i];
+		for (int i = 0; i < NUMBER_OF_BUCKETS; i++) {
+			if(this.buckets.getBucket(i) < oc.buckets.getBucket(i)) {
+				this.buckets.setBucket(i, oc.buckets.getBucket(i));
 			}
 		}
 	}
 
 	@Override
 	public void write(DataOutput out) throws IOException {
-		out.write(this.buckets);
+		out.write(this.buckets.arr);
 	}
 
 	@Override
 	public void read(DataInput in) throws IOException {
-		in.readFully(this.buckets);
+		in.readFully(this.buckets.arr);
 	}
 
 }

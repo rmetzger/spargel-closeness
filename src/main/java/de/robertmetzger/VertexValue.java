@@ -4,8 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import eu.stratosphere.nephele.util.SerializableHashMap;
-import eu.stratosphere.types.LongValue;
 import eu.stratosphere.types.Value;
 
 public class VertexValue implements Value {
