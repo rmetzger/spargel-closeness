@@ -34,15 +34,15 @@ public class HLL32CounterWritable implements Counter {
 		int hash = code >= 0 ? code : -(code + 1);
 		
 		
-		// last 4 bits as bucket index
+		// last log2(n) bits as bucket index
 		int mask = NUMBER_OF_BUCKETS - 1;
 		int bucketIndex = hash & mask;
 		
-		// throw away last 4 bits
-		hash >>= 4;
-		// make sure the 4 new zeroes don't impact estimate
-		hash |= 0xf0000000;
-		// hash has now 28 significant bits left
+		// throw away last log2(n) bits
+		hash >>= log2(NUMBER_OF_BUCKETS);
+		// make sure the new zeroes from the shift don't impact estimate
+		hash |= (mask << (Integer.SIZE - log2(NUMBER_OF_BUCKETS)));
+		// hash has now 32-log2(n) significant bits left
 		this.buckets.setBucket(bucketIndex, Integer.numberOfTrailingZeros(hash) + 1);
 	}
 	
@@ -92,6 +92,12 @@ public class HLL32CounterWritable implements Counter {
 	@Override
 	public void read(DataInput in) throws IOException {
 		in.readFully(this.buckets.arr);
+	}
+	
+	private static int log2(int i) {
+	    if(i == 0)
+	        return 0;
+	    return 31 - Integer.numberOfLeadingZeros(i);
 	}
 
 }
