@@ -12,17 +12,15 @@ public class HLL32CounterWritable implements Counter {
 	
 	// must be a power of two
 	public final static int NUMBER_OF_BUCKETS = 16;
+	// may not be larger than 8
+	public final static int BITS_PER_BUCKET = 5;
+
 	private final static double ALPHA = 0.709;
-	private final static int BITS_PER_BUCKET = 5;
 	
 	private NBitBucketArray buckets;
 	
 	public HLL32CounterWritable() {
-		try {
-			this.buckets = new NBitBucketArray(BITS_PER_BUCKET, NUMBER_OF_BUCKETS);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.buckets = new NBitBucketArray();
 	}
 
 	public void addNode(long n) throws Exception {
