@@ -15,7 +15,9 @@ public class HLL32CounterWritable implements Counter {
 	// may not be larger than 8
 	public final static int BITS_PER_BUCKET = 5;
 
-	private final static double ALPHA = 0.709;
+	private final static double ALPHA16 = 0.673;
+	private final static double ALPHA32 = 0.697;
+	private final static double ALPHA64 = 0.709;
 	
 	private NBitBucketArray buckets;
 	
@@ -23,7 +25,7 @@ public class HLL32CounterWritable implements Counter {
 		this.buckets = new NBitBucketArray();
 	}
 
-	public void addNode(long n) throws Exception {
+	public void addNode(long n) {
 		int code = (int)n;
 		code = (code + 0x7ed55d16) + (code << 12);
 		code = (code ^ 0xc761c23c) ^ (code >>> 19);
@@ -53,7 +55,18 @@ public class HLL32CounterWritable implements Counter {
 		for (int i = 0; i < NUMBER_OF_BUCKETS; i++) {
 			sum += Math.pow(2.0, -this.buckets.getBucket(i));
 		}
-		int estimate = (int)(ALPHA*m2*(1.0/sum));
+		int estimate = 0;
+		switch(NUMBER_OF_BUCKETS) {
+			case 16:
+				estimate = (int)(ALPHA16*m2*(1.0/sum));
+			case 32:
+				estimate = (int)(ALPHA32*m2*(1.0/sum));
+			case 64:
+				estimate = (int)(ALPHA64*m2*(1.0/sum));
+			default:
+				estimate = (int)((0.7213 / (1.0 + 1.079 / NUMBER_OF_BUCKETS))*m2*(1.0/sum));
+		}
+		
 		if(estimate < 2.5*NUMBER_OF_BUCKETS) {
 			// look for empty buckets
 			int V = 0;
@@ -73,7 +86,7 @@ public class HLL32CounterWritable implements Counter {
 		return (long)count;
 	}
 	
-	public void merge(Counter other) throws Exception {
+	public void merge(Counter other){
 		Preconditions.checkArgument(other instanceof HLL32CounterWritable);
 		HLL32CounterWritable oc = (HLL32CounterWritable) other;
 		// take the maximum of each bucket pair

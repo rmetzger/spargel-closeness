@@ -9,10 +9,10 @@ public class NBitBucketArray {
 		this.arr = new byte[arrSize];
 	}
 	
-	public void setBucket(int bucketIndex, int val) throws Exception{
-		if((double)val > (Math.pow(2.0, (double) HLL32CounterWritable.BITS_PER_BUCKET)) - 1.0) {
-			throw new Exception("Value too large to fit array.");
-		}
+	public void setBucket(int bucketIndex, int val) {
+		//if((double)val > (Math.pow(2.0, (double) HLL32CounterWritable.BITS_PER_BUCKET)) - 1.0) {
+		//	throw new Exception("Value too large to fit array.");
+		//}
 		int bitIndex = bucketIndex*HLL32CounterWritable.BITS_PER_BUCKET;
 		int firstBucket = bitIndex/Byte.SIZE;
 		int lastBucket = (bitIndex + HLL32CounterWritable.BITS_PER_BUCKET - 1)/Byte.SIZE;
@@ -61,6 +61,24 @@ public class NBitBucketArray {
 	}
 
 	public void mergeBuckets(NBitBucketArray other) {
-		
+		/*
+		int size = ((HLL32CounterWritable.NUMBER_OF_BUCKETS*HLL32CounterWritable.BITS_PER_BUCKET) + Long.SIZE - 1)/Long.SIZE; // round up
+		long[] arr1 = new long[size];
+		long[] arr2 = new long[size];
+		for (int i = 0; i < arr1.length; i++) {
+			for (int j = 0; j < this.arr.length; j++) {
+				arr1[i] += ((long) this.arr[j] & 0xffL) << (Byte.SIZE * j);
+				arr2[i] += ((long) other.arr[j] & 0xffL) << (Byte.SIZE * j);
+			}
+		}
+		for (int i = 0; i < arr1.length; i++) {
+			
+		}
+		for (int i = 0; i < arr1.length; i++) {
+			for (int j = 0; j < this.arr.length; j++) {
+				this.arr[(i * (Long.SIZE/Byte.SIZE)) + j] = (byte) (arr1[i] >> (Byte.SIZE * j));
+			}
+		}
+		*/
 	}
 }
